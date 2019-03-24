@@ -77,7 +77,7 @@ bintray {
     publish = true
     pkg(
         closureOf<BintrayExtension.PackageConfig> {
-            repo = "kloudformation-s3-module"
+            repo = "kloudformation"
             name = artifactId
             userOrg = "hexlabsio"
             setLicenses("Apache-2.0")
