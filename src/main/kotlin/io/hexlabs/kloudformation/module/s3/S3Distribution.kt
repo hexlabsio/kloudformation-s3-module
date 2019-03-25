@@ -81,7 +81,7 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
                     allowedMethods = +listOf(+"GET", +"HEAD", +"OPTIONS"),
                     forwardedValues = ForwardedValues(queryString = +true),
                     targetOriginId = origin.id,
-                    viewerProtocolPolicy = +"allow-all"
+                    viewerProtocolPolicy = +"redirect-to-https"
                 ),
                 defaultRootObject = pre.rootObject,
                 priceClass = +props.priceClass.value,
