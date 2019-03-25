@@ -37,7 +37,8 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
         var domain: Value<String>,
         var httpMethod: HttpMethod = HttpMethod.HTTP2,
         var sslSupportMethod: SslSupportMethod = SslSupportMethod.SNI,
-        var priceClass: CloudfrontPriceClass = CloudfrontPriceClass._200
+        var priceClass: CloudfrontPriceClass = CloudfrontPriceClass._200,
+        var certificateArn: Value<String>? = null
     ) : Properties
 
     class Parts {
@@ -51,17 +52,20 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
     class Builder(pre: Predefined, val props: Props) : SubModuleBuilder<S3Distribution, Parts, Predefined, Props>(pre, Parts()) {
 
         override fun KloudFormation.buildModule(): Parts.() -> S3Distribution = {
-            val certificate = bucketCertificate(CertificateProps(props.domain)) { props ->
-                certificate(props.domain) {
-                    subjectAlternativeNames(listOf(props.domain))
-                    domainValidationOptions(listOf(DomainValidationOption(
-                        domainName = props.domain,
-                        validationDomain = props.domain
-                    )))
-                    validationMethod(props.validationMethod.toString())
-                    modifyBuilder(props)
+            val certificate = if(props.certificateArn == null){
+                bucketCertificate(CertificateProps(props.domain)) { props ->
+                    certificate(props.domain) {
+                        subjectAlternativeNames(listOf(props.domain))
+                        domainValidationOptions(listOf(DomainValidationOption(
+                            domainName = props.domain,
+                            validationDomain = props.domain
+                        )))
+                        validationMethod(props.validationMethod.toString())
+                        modifyBuilder(props)
+                    }
                 }
-            }
+            } else null
+
             val origin = Origin(
                 id = +"s3Origin",
                 domainName = pre.bucketRef + +".s3-website-" + awsRegion + +".amazonaws.com",
@@ -82,7 +86,7 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
                 defaultRootObject = pre.rootObject,
                 priceClass = +props.priceClass.value,
                 httpVersion = +props.httpMethod.value,
-                viewerCertificate = ViewerCertificate(acmCertificateArn = certificate?.ref(), sslSupportMethod = +props.sslSupportMethod.value)
+                viewerCertificate = ViewerCertificate(acmCertificateArn = certificate?.ref() ?: props.certificateArn, sslSupportMethod = +props.sslSupportMethod.value)
             ))
             val cfDistribution = cloudFrontDistribution(distributionProps) { props ->
                 distribution(props.config) {
