@@ -36,7 +36,7 @@ data class S3Website(val bucket: Bucket, val policy: BucketPolicy? = null, val d
             certificateArn: Value<String>? = null,
             modifications: Modification<S3Distribution.Parts, S3Distribution, S3Distribution.Predefined>.() -> Unit = {}
         ) {
-            s3Distribution.invoke(S3Distribution.Props(domain, httpMethod, sslSupportMethod, priceClass,certificateArn), modifications)
+            s3Distribution.invoke(S3Distribution.Props(domain, httpMethod, sslSupportMethod, priceClass, certificateArn), modifications)
         }
         val s3Bucket = modification<Bucket.Builder, Bucket, BucketProps>()
         val s3BucketPolicy = optionalModification<BucketPolicy.Builder, BucketPolicy, PolicyProps>()
