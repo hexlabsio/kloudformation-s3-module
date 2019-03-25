@@ -52,7 +52,7 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
     class Builder(pre: Predefined, val props: Props) : SubModuleBuilder<S3Distribution, Parts, Predefined, Props>(pre, Parts()) {
 
         override fun KloudFormation.buildModule(): Parts.() -> S3Distribution = {
-            val certificate = if(props.certificateArn == null){
+            val certificate = if (props.certificateArn == null) {
                 bucketCertificate(CertificateProps(props.domain)) { props ->
                     certificate(props.domain) {
                         subjectAlternativeNames(listOf(props.domain))
