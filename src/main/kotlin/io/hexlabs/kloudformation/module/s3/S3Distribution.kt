@@ -49,7 +49,7 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
     data class CertificateProps(var domain: Value<String>, var validationMethod: CertificationValidationMethod = CertificationValidationMethod.DNS) : Properties
     data class DistributionProps(var config: DistributionConfig) : Properties
 
-    class Builder(pre: Predefined, val props: Props) : SubModuleBuilder<S3Distribution, Parts, Predefined, Props>(pre, Parts()) {
+    class Builder(pre: Predefined, val props: Props) : SubModuleBuilder<S3Distribution, Parts, Predefined>(pre, Parts()) {
 
         override fun KloudFormation.buildModule(): Parts.() -> S3Distribution = {
             val certificate = if (props.certificateArn == null) {

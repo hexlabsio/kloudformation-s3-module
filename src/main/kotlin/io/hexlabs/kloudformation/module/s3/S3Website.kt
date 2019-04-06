@@ -7,14 +7,13 @@ import io.kloudformation.model.iam.PolicyDocument
 import io.kloudformation.model.iam.Resource
 import io.kloudformation.model.iam.action
 import io.kloudformation.model.iam.policyDocument
-import io.kloudformation.module.Modification
 import io.kloudformation.module.Module
 import io.kloudformation.module.ModuleBuilder
 import io.kloudformation.module.Properties
-import io.kloudformation.module.SubModule
 import io.kloudformation.module.builder
 import io.kloudformation.module.modification
 import io.kloudformation.module.optionalModification
+import io.kloudformation.module.submodule
 import io.kloudformation.resource.aws.s3.Bucket
 import io.kloudformation.resource.aws.s3.BucketPolicy
 import io.kloudformation.resource.aws.s3.bucket
@@ -34,13 +33,13 @@ data class S3Website(val bucket: Bucket, val policy: BucketPolicy? = null, val d
             sslSupportMethod: SslSupportMethod = SslSupportMethod.SNI,
             priceClass: CloudfrontPriceClass = CloudfrontPriceClass._200,
             certificateArn: Value<String>? = null,
-            modifications: Modification<S3Distribution.Parts, S3Distribution, S3Distribution.Predefined>.() -> Unit = {}
+            modifications: S3Distribution.Parts.(S3Distribution.Predefined) -> Unit = {}
         ) {
             s3Distribution.invoke(S3Distribution.Props(domain, httpMethod, sslSupportMethod, priceClass, certificateArn), modifications)
         }
         val s3Bucket = modification<Bucket.Builder, Bucket, BucketProps>()
         val s3BucketPolicy = optionalModification<BucketPolicy.Builder, BucketPolicy, PolicyProps>()
-        val s3Distribution = SubModule({ pre: S3Distribution.Predefined, props: S3Distribution.Props -> S3Distribution.Builder(pre, props) })
+        val s3Distribution = submodule { pre: S3Distribution.Predefined, props: S3Distribution.Props -> S3Distribution.Builder(pre, props) }
     }
 
     class Builder : ModuleBuilder<S3Website, Parts>(Parts()) {

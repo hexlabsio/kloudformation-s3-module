@@ -34,7 +34,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.kloudformation:kloudformation:0.1.113")
+    implementation("io.kloudformation:kloudformation:0.1.118")
     testImplementation(group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version = "1.3.21")
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "1.3.21")
     testRuntime(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.0.0")
@@ -43,10 +43,10 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
 
 configure<KtlintExtension> {
     outputToConsole.set(true)
@@ -65,8 +65,7 @@ configure<GithookExtension> {
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
-    classifier = "sources"
-    println(sourceSets["main"].allSource)
+    archiveClassifier.set("sources")
     from(sourceSets["main"].allSource)
 }
 
