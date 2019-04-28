@@ -18,6 +18,7 @@ import io.kloudformation.resource.aws.s3.Bucket
 import io.kloudformation.resource.aws.s3.BucketPolicy
 import io.kloudformation.resource.aws.s3.bucket
 import io.kloudformation.resource.aws.s3.bucketPolicy
+import io.kloudformation.unaryPlus
 
 data class S3Website(val bucket: Bucket, val policy: BucketPolicy? = null, val distribution: S3Distribution? = null) :
         Module {

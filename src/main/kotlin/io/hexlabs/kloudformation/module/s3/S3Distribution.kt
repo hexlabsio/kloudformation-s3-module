@@ -20,6 +20,7 @@ import io.kloudformation.resource.aws.certificatemanager.Certificate
 import io.kloudformation.resource.aws.certificatemanager.certificate
 import io.kloudformation.resource.aws.cloudfront.Distribution
 import io.kloudformation.resource.aws.cloudfront.distribution
+import io.kloudformation.unaryPlus
 
 enum class CertificationValidationMethod { EMAIL, DNS }
 enum class SslSupportMethod(val value: String) { SNI("sni-only"), VIP("vip") }
