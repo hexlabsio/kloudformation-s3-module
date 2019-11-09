@@ -32,7 +32,7 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
     class Predefined(
         var bucketRef: Value<String>,
         var rootObject: Value<String>
-    ) : Properties
+    ) : Properties()
 
     class Props(
         var domain: Value<String>,
@@ -40,15 +40,15 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
         var sslSupportMethod: SslSupportMethod = SslSupportMethod.SNI,
         var priceClass: CloudfrontPriceClass = CloudfrontPriceClass._200,
         var certificateArn: Value<String>? = null
-    ) : Properties
+    ) : Properties()
 
-    class Parts {
+    class Parts : io.kloudformation.module.Parts() {
         val bucketCertificate: OptionalModification<Certificate.Builder, Certificate, CertificateProps> = optionalModification()
         val cloudFrontDistribution: OptionalModification<Distribution.Builder, Distribution, DistributionProps> = optionalModification()
     }
 
-    data class CertificateProps(var domain: Value<String>, var validationMethod: CertificationValidationMethod = CertificationValidationMethod.DNS) : Properties
-    data class DistributionProps(var config: DistributionConfig) : Properties
+    data class CertificateProps(var domain: Value<String>, var validationMethod: CertificationValidationMethod = CertificationValidationMethod.DNS) : Properties()
+    data class DistributionProps(var config: DistributionConfig) : Properties()
 
     class Builder(pre: Predefined, val props: Props) : SubModuleBuilder<S3Distribution, Parts, Predefined>(pre, Parts()) {
 

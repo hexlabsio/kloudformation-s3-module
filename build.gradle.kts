@@ -22,6 +22,7 @@ fun version(): String {
 }
 
 val projectVersion = version()
+val jacksonVersion = "2.9.8"
 
 group = "io.hexlabs"
 val artifactId = "kloudformation-s3-module"
@@ -34,10 +35,13 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.kloudformation:kloudformation:1.0.3")
+    implementation("io.kloudformation:kloudformation:1.1.100")
     testImplementation(group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version = "1.3.21")
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "1.3.21")
     testRuntime(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.0.0")
+    testImplementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
+    testImplementation(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = jacksonVersion)
+    testRuntime(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = jacksonVersion)
 }
 
 tasks.withType<KotlinCompile> {

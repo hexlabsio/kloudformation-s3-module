@@ -23,10 +23,10 @@ import io.kloudformation.unaryPlus
 data class S3Website(val bucket: Bucket, val policy: BucketPolicy? = null, val distribution: S3Distribution? = null) :
         Module {
 
-    class Parts {
+    class Parts : io.kloudformation.module.Parts() {
         class BucketProps(var indexDocument: String = "index.html", var errorDocument: String = indexDocument) :
-                Properties
-        class PolicyProps(var bucketRef: Value<String>, var policyDocument: PolicyDocument) : Properties
+                Properties()
+        class PolicyProps(var bucketRef: Value<String>, var policyDocument: PolicyDocument) : Properties()
 
         fun s3Distribution(
             domain: Value<String>,
@@ -70,7 +70,7 @@ data class S3Website(val bucket: Bucket, val policy: BucketPolicy? = null, val d
                     modifyBuilder(props)
                 }
             }
-            val distribution = s3Distribution.module(S3Distribution.Predefined(bucket.ref(), bucket.websiteConfiguration?.indexDocument ?: +"index.html"))()
+            val distribution = build(s3Distribution, S3Distribution.Predefined(bucket.ref(), bucket.websiteConfiguration?.indexDocument ?: +"index.html"))
             S3Website(bucket, policy, distribution)
         }
     }
