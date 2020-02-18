@@ -91,7 +91,6 @@ class S3Distribution(val certificate: Certificate?, val cloudfrontDistribution: 
             ))
             val cfDistribution = cloudFrontDistribution(distributionProps) { props ->
                 distribution(props.config) {
-
                     modifyBuilder(props)
                 }
             }
